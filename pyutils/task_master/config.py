@@ -5,7 +5,7 @@ from typing import Callable, Any, Union
 
 import yaml
 
-from easy_python.task_master.args import AT
+from pyutils.task_master.args import AT
 
 NoArgsFunc = Callable[[], None]
 ArgsFunc = Callable[[AT], None]

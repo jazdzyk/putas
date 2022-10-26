@@ -1,6 +1,6 @@
 from typing import Callable, Optional, Any
 
-from easy_python.task_master.storage import args as term_args
+from pyutils.task_master.storage import args as term_args
 
 
 def if_debug(func: Callable) -> Callable:

@@ -1,4 +1,4 @@
-from easy_python.task_master.args import AT
+from pyutils.task_master.args import AT
 
 _args: AT = None
 

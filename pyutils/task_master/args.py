@@ -1,6 +1,6 @@
 from typing import TypeVar
 
-from easy_python.terminal import terminal_args, args_params
+from pyutils.terminal import terminal_args, args_params
 
 
 @terminal_args

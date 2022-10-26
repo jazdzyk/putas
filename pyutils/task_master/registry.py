@@ -4,14 +4,14 @@ from importlib import import_module
 from pathlib import Path
 from typing import Dict, Type, Callable, Any
 
-from easy_python.task_master.args import AT, BaseArgs
-from easy_python.terminal import args_params, terminal_args
+from pyutils.task_master.args import AT, BaseArgs
+from pyutils.terminal import args_params, terminal_args
 
 TaskFunc = Callable[..., None]
 
 
 def _does_task_exist(task_name: str, extension=".py") -> bool:
-    from easy_python.task_master.config import Config
+    from pyutils.task_master.config import Config
 
     tasks_path = os.path.join(Path().absolute(), Config.tasks_module)
     for module_path, dir_names, script_names in os.walk(tasks_path):
@@ -63,7 +63,7 @@ class Task:
 
     def execute(self) -> None:
         if self._uses_func_params:
-            from easy_python.task_master.storage import args
+            from pyutils.task_master.storage import args
             func_kwargs = {attr: getattr(args(), attr) for attr in set(args().__slots__) - set(BaseArgs.__slots__)}
             self._func(**func_kwargs)
         else:

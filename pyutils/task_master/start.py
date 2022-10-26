@@ -2,13 +2,13 @@ import os
 from pathlib import Path
 from typing import Dict, Union, Optional
 
-from easy_python.terminal import terminal_args, args_params
+from pyutils.terminal import terminal_args, args_params
 
 FilesContent = Dict[str, Optional[str]]
 
 
 def _example_content():
-    return """from easy_python.task_master import register
+    return """from pyutils.task_master import register
 
 
 @register
@@ -18,7 +18,7 @@ def hello_world():
 
 
 def _example_config_content():
-    return """from easy_python.task_master import AT
+    return """from pyutils.task_master import AT
 
 
 def post_parse_example_func(args: AT):
