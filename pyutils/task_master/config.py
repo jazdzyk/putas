@@ -1,7 +1,7 @@
 import os
 from importlib import import_module
 from pathlib import Path
-from typing import Callable, Any, Union
+from typing import Callable, Dict, Any, Union
 
 import yaml
 
@@ -9,6 +9,7 @@ from pyutils.task_master.args import AT
 
 NoArgsFunc = Callable[[], None]
 ArgsFunc = Callable[[AT], None]
+MasterArgs = Dict[str, Union[str, int, float]]
 
 _CONFIG_FILE_NAME = "task_master.config.yaml"
 
@@ -21,9 +22,12 @@ def _build_config_func(func_name: str) -> Union[NoArgsFunc, ArgsFunc]:
 
 class Config:
     tasks_module: str = "tasks"
+
     pre_parse_func: NoArgsFunc = None
     post_parse_func: ArgsFunc = None
     post_task_func: ArgsFunc = None
+
+    master_args: MasterArgs = None
 
     @classmethod
     def update_if_needed(cls) -> None:

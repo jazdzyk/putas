@@ -4,10 +4,14 @@ from importlib import import_module
 from pathlib import Path
 from typing import Dict, Type, Callable, Any
 
+from pyutils.task_master.config import Config, MasterArgs
+
 from pyutils.task_master.args import AT, BaseArgs
 from pyutils.terminal import args_params, terminal_args
 
 TaskFunc = Callable[..., None]
+
+_MASTER_ARGS_ATTRS = set()
 
 
 def _does_task_exist(task_name: str, extension=".py") -> bool:
@@ -45,6 +49,16 @@ def _attribute_generator(parameter):
                             f"This parameter is {required_or_default_text}")
 
 
+def _master_args_attributes_generator(master_args: MasterArgs):
+    attrs = {}
+
+    for key, val in master_args.items():
+        attrs[key] = args_params(type=type(val), required=False, default=val, read_only=True)
+        _MASTER_ARGS_ATTRS.add(key)
+
+    return attrs
+
+
 class Task:
     __slots__ = ("_name", "_args_cls", "_func", "_uses_func_params")
 
@@ -64,7 +78,8 @@ class Task:
     def execute(self) -> None:
         if self._uses_func_params:
             from pyutils.task_master.storage import args
-            func_kwargs = {attr: getattr(args(), attr) for attr in set(args().__slots__) - set(BaseArgs.__slots__)}
+            final_attrs = set(args().__slots__) - set(BaseArgs.__slots__) - _MASTER_ARGS_ATTRS
+            func_kwargs = {attr: getattr(args(), attr) for attr in final_attrs}
             self._func(**func_kwargs)
         else:
             self._func()
@@ -117,7 +132,12 @@ def register(func: TaskFunc = None, name: str = None, args_cls: Type[AT] = None)
 
             dynamic_args_cls = terminal_args(type(f"DynamicArgs_{name}", (BaseArgs,), dynamic_class_attributes))
 
-        _REGISTRY[name] = Task(name, dynamic_args_cls or args_cls or BaseArgs, _func, dynamic_args_cls is not None)
+        task_cls = dynamic_args_cls or args_cls or BaseArgs
+        if Config.master_args:
+            task_cls = terminal_args(type(f"MasterArgs_{name}", (task_cls,),
+                                          _master_args_attributes_generator(Config.master_args)))
+
+        _REGISTRY[name] = Task(name, task_cls, _func, dynamic_args_cls is not None)
 
         return _func
 
