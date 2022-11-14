@@ -4,9 +4,12 @@ __all__ = [
     'Config',
 ]
 
+import typing
 from argparse import ArgumentParser
 from types import ModuleType
 from typing import List, Any, Union, Dict, Tuple, Callable
+
+from pyutils import converters
 
 # ---------------------------------------------------------------------------------------------------------------------
 # CUSTOM TYPES
@@ -121,9 +124,20 @@ def _parse_arguments(params: ParserParams):
         type_ = arg_param_dict["type"]
 
         if type_ is bool:
-            arg_param_dict["type"] = _to_bool
-        elif type_ is list:
-            arg_param_dict["type"] = _to_list
+            arg_param_dict["type"] = converters.to_bool
+        elif type_ in (list, List, list[str], List[str]):
+            arg_param_dict["type"] = converters.to_list
+        elif type_ in (list[int], List[int]):
+            arg_param_dict["type"] = converters.to_int_list
+        elif type_ in (list[float], List[float]):
+            arg_param_dict["type"] = converters.to_float_list
+        elif type_ in (tuple, Tuple):
+            arg_param_dict["type"] = converters.to_tuple
+        elif (type_args := typing.get_args(type_)) and (type_ := typing.get_origin(type_)[type_args[0]]):
+            if type_ == tuple[int]:
+                arg_param_dict["type"] = converters.to_int_tuple
+            elif type_ == tuple[float]:
+                arg_param_dict["type"] = converters.to_float_tuple
         # TODO: think if any other types need conversion
 
     parser = ArgumentParser()
@@ -146,15 +160,6 @@ def _repr_format(s: Any):
         return f"'{s}'"
 
     return s
-
-
-# TODO: maybe these converters could be placed in another file or class?
-def _to_list(s: str, delimiter=",") -> List[str]:
-    return s.split(delimiter)
-
-
-def _to_bool(s: str) -> bool:
-    return s.lower() in ["true", "t", "1", "yes", "y"]
 
 
 # ---------------------------------------------------------------------------------------------------------------------
