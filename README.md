@@ -3,7 +3,7 @@
 Currently, the biggest feature that this repo offers is a `task_master` module which primarily handles task management 
 in the project. 
 
-Additional features are `terminal_args` which makes command line arguments parsing much nicer and some `pandas` utils.
+Additional features are `terminal_args` which makes command line arguments parsing much nicer and some `structs` utils.
 
 To take advantage of what we offer, you need to first install the `easy_python` package. We recommend doing it 
 in a virtual environment.

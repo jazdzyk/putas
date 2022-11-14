@@ -6,7 +6,7 @@ setup(
     description="Useful module making Python easier",
     author="Kuba Jazdzyk",
     author_email="jazdzyk.kuba@gmail.com",
-    packages=["pyutils", "pyutils.task_master", "pyutils.task_master.extras"],
+    packages=["pyutils", "pyutils.structs", "pyutils.task_master", "pyutils.task_master.extras"],
     entry_points={
         "console_scripts": [
             "task_master=pyutils.task_master.master:run",
