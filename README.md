@@ -1,4 +1,6 @@
-## This repo tries to make your life easier! 
+## PUtAS - Python Utils Accessible Set
+
+#### This repo tries to make your life easier! 
 
 Currently, the biggest feature that this repo offers is a `task_master` module which primarily handles task management 
 in the project. 
