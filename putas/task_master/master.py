@@ -1,7 +1,7 @@
 import sys
 
-from pyutils.task_master import registry, storage
-from pyutils.task_master.config import Config, enable_cwd_imports, apply_post_parse_func, apply_post_task_func, \
+from putas.task_master import registry, storage
+from putas.task_master.config import Config, enable_cwd_imports, apply_post_parse_func, apply_post_task_func, \
     apply_pre_parse_func
 
 

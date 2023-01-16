@@ -9,7 +9,7 @@ from argparse import ArgumentParser
 from types import ModuleType
 from typing import List, Any, Union, Dict, Tuple, Callable
 
-from pyutils import converters
+from putas import converters
 
 # ---------------------------------------------------------------------------------------------------------------------
 # CUSTOM TYPES

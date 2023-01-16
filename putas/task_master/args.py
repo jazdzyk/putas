@@ -1,6 +1,6 @@
 from typing import TypeVar
 
-from pyutils.terminal import terminal_args, args_params
+from putas.terminal import terminal_args, args_params
 
 
 @terminal_args

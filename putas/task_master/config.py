@@ -5,7 +5,7 @@ from typing import Callable, Dict, Any, Union
 
 import yaml
 
-from pyutils.task_master.args import AT
+from putas.task_master.args import AT
 
 NoArgsFunc = Callable[[], None]
 ArgsFunc = Callable[[AT], None]
