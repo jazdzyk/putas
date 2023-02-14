@@ -45,6 +45,19 @@ def load_yaml(path: str) -> dict:
         return yaml.safe_load(yaml_file)
 
 
+def save_yaml(data: Union[dict, list], path: str) -> None:
+    """Saves given data to a .json file.
+
+    :param data: a data to be saved
+    :param path: a path to output .yaml file
+    """
+    if not path.endswith(".yaml"):
+        path += ".yaml"
+
+    with open(path, "w") as out_yaml:
+        yaml.dump(data, out_yaml, default_flow_style=False)
+
+
 def load_txt(path: str, lines=False) -> Union[str, List[str]]:
     """Loads data from a .txt file.
 
