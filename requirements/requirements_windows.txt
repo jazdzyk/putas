@@ -3,3 +3,4 @@ cython
 pandas
 PyYAML
 tqdm
+Pillow

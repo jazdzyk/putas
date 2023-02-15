@@ -4,6 +4,7 @@ import random
 import shutil
 from typing import Callable
 
+from PIL import Image
 from tqdm import tqdm
 
 from generators import path_generator
@@ -35,10 +36,12 @@ _CopyMoveFunction = Callable[[str, str], None]
 
 
 def move_n_random_files(src_dir: str, dst_dir: str, n: int) -> None:
+    # TODO: add a docstring
     _copy_or_move_n_random_files(shutil.move, src_dir, dst_dir, n)
 
 
 def copy_n_random_files(src_dir: str, dst_dir: str, n: int) -> None:
+    # TODO: add a docstring
     _copy_or_move_n_random_files(shutil.copy2, src_dir, dst_dir, n)
 
 
@@ -62,6 +65,7 @@ def _copy_or_move_n_random_files(func: _CopyMoveFunction, src_dir: str, dst_dir:
 
 
 def remove_non_ascii_characters_in_dir_names(src_dir: str) -> None:
+    # TODO: add a docstring
     count = 0
 
     for dir_path, dir_name in tqdm(path_generator(src_dir, with_name=True)):
@@ -82,3 +86,25 @@ def remove_non_ascii_characters_in_dir_names(src_dir: str) -> None:
             count += 1
 
     print(f"Successfully removed non-ASCII characters, renaming {count} files.")
+
+
+def remove_corrupted_images_from_dir(src_dir: str) -> None:
+    # TODO: add a docstring
+    def _remove(path: str):
+        os.remove(path)
+        print(f"Removed image_path={path}")
+
+    for image_path in tqdm(path_generator(src_dir)):
+        try:
+            image = Image.open(image_path)
+            image.verify()
+        except Exception:
+            _remove(image_path)
+            continue
+
+        image_name = op.split(image_path)[-1]
+        name, ext = op.splitext(image_name)
+        if ext == ".webp":
+            split_name = name.split("x")
+            if len(split_name) == 2 and split_name[0].isnumeric() and split_name[1].isnumeric():
+                _remove(image_path)
