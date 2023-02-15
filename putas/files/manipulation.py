@@ -6,6 +6,7 @@ from typing import Callable
 
 from tqdm import tqdm
 
+from generators import path_generator
 from putas.files.io import load_json, save_json
 
 
@@ -58,3 +59,26 @@ def _copy_or_move_n_random_files(func: _CopyMoveFunction, src_dir: str, dst_dir:
     }[func]
 
     print(f"Successfully {action} {n} files.")
+
+
+def remove_non_ascii_characters_in_dir_names(src_dir: str) -> None:
+    count = 0
+
+    for dir_path, dir_name in tqdm(path_generator(src_dir, with_name=True)):
+        if not op.isdir(dir_path):
+            continue
+
+        is_non_ascii = [not (0 <= ord(c) <= 127) for c in dir_name]
+        if any(is_non_ascii):
+            new_name = ""
+
+            for _is_non_ascii, c in zip(is_non_ascii, dir_name):
+                if _is_non_ascii:
+                    continue
+                new_name += c
+
+            os.rename(dir_path, op.join(src_dir, new_name))
+
+            count += 1
+
+    print(f"Successfully removed non-ASCII characters, renaming {count} files.")
