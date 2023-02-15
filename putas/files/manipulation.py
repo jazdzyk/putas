@@ -108,3 +108,16 @@ def remove_corrupted_images_from_dir(src_dir: str) -> None:
             split_name = name.split("x")
             if len(split_name) == 2 and split_name[0].isnumeric() and split_name[1].isnumeric():
                 _remove(image_path)
+
+
+def move_files_to_outer_dir(src_dir: str) -> None:
+    for dir_path in path_generator(src_dir):
+        if not op.isdir(dir_path):
+            continue
+
+        for file_name in tqdm(os.listdir(dir_path)):
+            shutil.move(op.join(dir_path, file_name), op.join(src_dir, file_name))
+        print(f"Moved files from {dir_path}")
+
+        print("Removing directory.")
+        os.system(f"rm -r '{dir_path}'")
