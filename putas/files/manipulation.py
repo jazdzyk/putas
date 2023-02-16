@@ -7,7 +7,7 @@ from typing import Callable
 from PIL import Image
 from tqdm import tqdm
 
-from generators import path_generator
+from putas.generators import path_generator
 from putas.files.io import load_json, save_json
 
 
