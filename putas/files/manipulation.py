@@ -2,7 +2,7 @@ import os
 import os.path as op
 import random
 import shutil
-from typing import Callable
+from typing import Callable, List
 
 from PIL import Image
 from tqdm import tqdm
@@ -121,3 +121,22 @@ def move_files_to_outer_dir(src_dir: str) -> None:
 
         print("Removing directory.")
         os.system(f"rm -r '{dir_path}'")
+
+
+def remove_corresponding_files(src_dir: str, ref_dirs: List[str]) -> None:
+    src_file_names = set(os.listdir(src_dir))
+
+    ref_file_names = []
+    for ref_dir in ref_dirs:
+        ref_file_names += os.listdir(ref_dir)
+    ref_file_names = set(ref_file_names)
+
+    corresponding_file_names = ref_file_names.intersection(src_file_names)
+
+    for file_name in corresponding_file_names:
+        if op.isdir(path := op.join(src_dir, file_name)):
+            continue
+
+        os.remove(path)
+
+    print(f"Removed {len(corresponding_file_names)} files in {src_dir}")
