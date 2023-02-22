@@ -1,9 +1,9 @@
 import os
 import os.path as op
-from typing import Iterator, Tuple
+from typing import Iterator, Tuple, Union
 
 
-def path_generator(dir_path: str, with_name=False) -> Iterator[str | Tuple[str, str]]:
+def path_generator(dir_path: str, with_name=False) -> Iterator[Union[str, Tuple[str, str]]]:
     """
     Generates paths for files in a given directory.
     Provides the same functionality as `os.listdir()`, but builds full file paths, not only file names.
