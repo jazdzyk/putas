@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="putas",
-    version="0.0.2",
+    version="0.0.3",
     description="Useful module making Python easier",
     author="Kuba Jazdzyk",
     author_email="jazdzyk.kuba@gmail.com",
