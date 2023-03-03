@@ -1,6 +1,6 @@
 import os
 import os.path as op
-from typing import Iterator, Tuple, Union
+from typing import Iterator, Tuple, Union, Generator
 
 
 def path_generator(dir_path: str, with_name=False) -> Iterator[Union[str, Tuple[str, str]]]:
@@ -19,3 +19,7 @@ def path_generator(dir_path: str, with_name=False) -> Iterator[Union[str, Tuple[
             output = (output, file_name)
 
         yield output
+
+
+def empty_lists(n: int) -> Generator[list]:
+    return ([] for _ in range(n))
