@@ -21,5 +21,5 @@ def path_generator(dir_path: str, with_name=False) -> Iterator[Union[str, Tuple[
         yield output
 
 
-def empty_lists(n: int) -> Generator[list]:
+def empty_lists(n: int) -> Generator[list, None, None]:
     return ([] for _ in range(n))
