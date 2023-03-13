@@ -2,7 +2,7 @@ import inspect
 import os
 from importlib import import_module
 from pathlib import Path
-from typing import Dict, Type, Callable, Any
+from typing import Dict, Type, Callable, Any, List
 
 from putas.task_master.config import Config, MasterArgs
 
@@ -100,7 +100,7 @@ class DynamicArgumentException(Exception):
         super(DynamicArgumentException, self).__init__(dynamic_argument_error)
 
 
-def register(func: TaskFunc = None, name: str = None, args_cls: Type[AT] = None):
+def register(func: TaskFunc = None, name: str = None, args_cls: Type[AT] = None, decorators: List[Callable] = None):
     def _register(_func: TaskFunc):
         nonlocal name
         if name is None:
@@ -136,6 +136,10 @@ def register(func: TaskFunc = None, name: str = None, args_cls: Type[AT] = None)
         if Config.master_args:
             task_cls = terminal_args(type(f"MasterArgs_{name}", (task_cls,),
                                           _master_args_attributes_generator(Config.master_args)))
+
+        if decorators:
+            for decorator in decorators:
+                _func = decorator(_func)
 
         _REGISTRY[name] = Task(name, task_cls, _func, dynamic_args_cls is not None)
 
