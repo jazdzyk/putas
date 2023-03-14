@@ -6,6 +6,7 @@ __all__ = [
 
 import typing
 from argparse import ArgumentParser
+from functools import partial
 from types import ModuleType
 from typing import List, Any, Union, Dict, Tuple, Callable
 
@@ -138,6 +139,9 @@ def _parse_arguments(params: ParserParams):
                 arg_param_dict["type"] = converters.to_int_tuple
             elif type_ == tuple[float]:
                 arg_param_dict["type"] = converters.to_float_tuple
+        elif type_ in (dict, dict[str, str], Dict[str, str]):
+            arg_param_dict["type"] = converters.to_dict  # TODO: make dict more generic and complete
+
         # TODO: think if any other types need conversion
 
     parser = ArgumentParser()

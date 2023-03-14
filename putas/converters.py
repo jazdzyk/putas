@@ -1,4 +1,12 @@
-from typing import List, Tuple
+import json
+from typing import List, Tuple, Dict, TypeVar
+
+KT = TypeVar["KeyType"]
+VT = TypeVar["ValType"]
+
+
+def to_dict(s: str, key_type: KT = str, val_type: VT = str) -> Dict[KT, VT]:
+    return {key_type(k): val_type(v) for k, v in json.loads(s).items()}
 
 
 def to_list(s: str, delimiter=",") -> List[str]:
