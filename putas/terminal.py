@@ -134,13 +134,13 @@ def _parse_arguments(params: ParserParams):
             arg_param_dict["type"] = converters.to_float_list
         elif type_ in (tuple, Tuple):
             arg_param_dict["type"] = converters.to_tuple
+        elif type_ in (dict, dict[str, str], Dict[str, str]):
+            arg_param_dict["type"] = converters.to_dict  # TODO: make dict more generic and complete
         elif (type_args := typing.get_args(type_)) and (type_ := typing.get_origin(type_)[type_args[0]]):
             if type_ == tuple[int]:
                 arg_param_dict["type"] = converters.to_int_tuple
             elif type_ == tuple[float]:
                 arg_param_dict["type"] = converters.to_float_tuple
-        elif type_ in (dict, dict[str, str], Dict[str, str]):
-            arg_param_dict["type"] = converters.to_dict  # TODO: make dict more generic and complete
 
         # TODO: think if any other types need conversion
 
