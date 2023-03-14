@@ -1,5 +1,6 @@
 from multiprocessing import Process
-from typing import Callable
+from multiprocessing.pool import ThreadPool
+from typing import Callable, Iterable, Any
 
 
 class Multiprocessor:
@@ -13,3 +14,8 @@ class Multiprocessor:
 
         for process in self._processes:
             process.join()
+
+
+def simple_thread_pool_map(func: Callable[[Any], Any], iterable: Iterable, thread_num: int = None) -> Iterable:
+    with ThreadPool(processes=thread_num) as pool:
+        return pool.map(func, iterable)
