@@ -23,3 +23,7 @@ def path_generator(dir_path: str, with_name=False) -> Iterator[Union[str, Tuple[
 
 def empty_lists(n: int) -> Generator[list, None, None]:
     return ([] for _ in range(n))
+
+
+def empty_dicts(n: int) -> Generator[dict, None, None]:
+    return ({} for _ in range(n))
